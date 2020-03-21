@@ -1,6 +1,20 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var lives = 3;
+var level = 1;
+var score = 0;
+
+var blocks = [];
+var block_width = 140;
+var block_height = 140;
+var block_speed = 1;
+var block_count = 3;
+
+var balls = [];
+var ball_speed = 15;
+var since_last_fire = performance.now();
+
 var tank_width = 130;
 var tank_height = 130;
 var tank_speed = 10;
@@ -10,20 +24,6 @@ tank.set("X", canvas.width - 935);
 tank.set("Y", canvas.height - 250);
 tank.set("width", tank_width);
 tank.set("height", tank_height);
-
-var balls = [];
-var ball_speed = 15;
-var since_last_fire = performance.now();
-
-var blocks = [];
-var block_width = 140;
-var block_height = 140;
-var block_speed = 1;
-var block_count = 3;
-
-var lives = 3;
-var level = 1;
-var score = 0;
 
 var right_pressed = false;
 var left_pressed = false;
@@ -231,6 +231,42 @@ function block_collision() {
   }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//function for draw balls
+//---------own code-------//
+
+function drawNewBall(ball_X, ball_Y) {
+  ctx.beginPath();
+  ctx.arc(ball_X, ball_Y, 15, 0, Math.PI * 2);
+
+  var ball = new Map();
+  ball.set("X", ball_X);
+  ball.set("Y", ball_Y);
+  ball.set("width", 3);
+  ball.set("height", 3);
+  balls.push(ball);
+  since_last_fire = performance.now();
+}
+
+function drawBalls() {
+  for (var i = 0; i < balls.length; i++) {
+    ctx.beginPath();
+    ctx.arc(balls[i].get("X"), balls[i].get("Y"), 15, 0, Math.PI * 2);
+    ctx.fillStyle = "#e25822";
+    ctx.fill();
+    ctx.closePath();
+  }
+}
+//function for to move the balls throw Y-axis
+//---------own code-------//
+function moveBalls() {
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].set("Y", balls[i].get("Y") - ball_speed);
+  if (balls[i].get("Y") < 0) {
+      balls.splice(i, 1);
+    }
+  }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for to detect the collision between ball and blocks
 //-------referred from W3 Schools--------//
 function collision_detector(first, second) {
@@ -308,42 +344,6 @@ function ball_block_collision() {
   }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//function for draw balls
-//---------own code-------//
-
-function drawNewBall(ball_X, ball_Y) {
-  ctx.beginPath();
-  ctx.arc(ball_X, ball_Y, 15, 0, Math.PI * 2);
-
-  var ball = new Map();
-  ball.set("X", ball_X);
-  ball.set("Y", ball_Y);
-  ball.set("width", 3);
-  ball.set("height", 3);
-  balls.push(ball);
-  since_last_fire = performance.now();
-}
-
-function drawBalls() {
-  for (var i = 0; i < balls.length; i++) {
-    ctx.beginPath();
-    ctx.arc(balls[i].get("X"), balls[i].get("Y"), 15, 0, Math.PI * 2);
-    ctx.fillStyle = "#e25822";
-    ctx.fill();
-    ctx.closePath();
-  }
-}
-//function for to move the balls throw Y-axis
-//---------own code-------//
-function moveBalls() {
-  for (var i = 0; i < balls.length; i++) {
-    balls[i].set("Y", balls[i].get("Y") - ball_speed);
-  if (balls[i].get("Y") < 0) {
-      balls.splice(i, 1);
-    }
-  }
-}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //---------own code-------//
 function drawInfo() {
