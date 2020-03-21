@@ -1,0 +1,10 @@
+canvas {
+  position: absolute;
+  background-image: url('images/bg2.jpg');
+  width: 100%;
+}
+.grid-container {
+  display: grid;
+  grid: 'canvas';
+}
+
