@@ -5,7 +5,7 @@ var tank_width = 130;
 var tank_height = 130;
 var tank_speed = 10;
 
-var tank = new Map();
+var tank = new Map();//------reffered from W3 Schools------//
 tank.set("X", canvas.width - 935);
 tank.set("Y", canvas.height - 250);
 tank.set("width", tank_width);
@@ -36,6 +36,8 @@ document.addEventListener("keyup", KeyUpFunc, false);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //functions for keys
+
+//-------referred from stack overflow--------//
 function KeyDownFunc(e) {
   if (e.keyCode == 39) {
     right_pressed = true;
@@ -65,6 +67,7 @@ function KeyUpFunc(e) {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //functions for button images 
+//------own code----------//
 function buttonsload(){
   ctx.beginPath();
   var up = new Image();
@@ -86,6 +89,7 @@ function buttonsload(){
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for draw tank
+//------own code------//
 function drawTank() {
   ctx.beginPath();
   var img = new Image();
@@ -95,6 +99,7 @@ function drawTank() {
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for generate the X and Y coordinates randomly to the blocks
+//------own code------//
 function generateCoords() {
   do {
     var X = Math.random() * (canvas.width - 80) + 80;
@@ -105,6 +110,8 @@ function generateCoords() {
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for check the space between randomly created blocks X and Y coordinates
+
+//-------referred from stack overflow--------//
 function distanceCheck(X1, Y1, X2, Y2) {
   var distance = Math.sqrt(Math.pow(X1 - X2, 2) + Math.pow(Y1 - Y2, 2));
   if (distance > 140 && Math.abs(Y1 - Y2) > 40) {
@@ -136,6 +143,8 @@ function blockDistanceChecker(X, Y) {
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for draw the new blocks
+
+//----------own code-----//
 function drawNewBlock() {
   
  do {
@@ -144,7 +153,7 @@ function drawNewBlock() {
     var Y = coords[1];
   } while (blockDistanceChecker(X, Y));
 
-  var block = new Map();
+  var block = new Map();//------reffered from W3------//
   block.set("X", X);
   block.set("Y", Y);
   block.set("width", block_width);
@@ -164,6 +173,7 @@ function drawBlocks() {
 }
 
 //function for to move the blocks through Y-axis
+//-------own code------//
 function moverFunc() {
   for (var i = 0; i < blocks.length; i++) {
     blocks[i].set("Y", blocks[i].get("Y") + block_speed);
@@ -175,8 +185,9 @@ function moverFunc() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for to find the collision between tank and blocks
+
+//-------referred from W3 Schools--------//
 function block_collision() {
-  
   for (i = 0; i < blocks.length; i++) {
     var conflict_X = false;
     var conflict_Y = false;
@@ -193,7 +204,7 @@ function block_collision() {
       if(lives === 1) {
         one = new Audio('audio/explosion.mp3');
         one.play();
-        swal('Game Over !', "Click the button play again", "images/game2.png",{ button: "Play Again!!!" });
+        swal('Game Over !', "Click the button play again", "images/game2.png",{ button: "Play Again!!!"});
         for (i = 0; i < blocks.length; i++)
         blocks.splice(i, block_count);
         tank.set("X", canvas.width - 935);
@@ -212,10 +223,7 @@ function block_collision() {
         swal('One More Life!', "Click the button play again", "images/red1.jpg",{ button: "Play Again!!!" });
         lives -= 1;
       }
-
-      
       blocks.splice(i, block_count);
-      
       tank.set("X", canvas.width - 935);
       tank.set("Y", canvas.height - 250);
       
@@ -224,6 +232,7 @@ function block_collision() {
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for to detect the collision between ball and blocks
+//-------referred from W3 Schools--------//
 function collision_detector(first, second) {
   var x1 = first.get("X");
   var y1 = first.get("Y");
@@ -242,7 +251,7 @@ function collision_detector(first, second) {
     return false;
   }
 }
-
+//-------referred from W3 Schools--------//
 function ball_block_collision() {
   for (var i = 0; i < blocks.length; i++) {
     var block = blocks[i];
@@ -257,6 +266,8 @@ function ball_block_collision() {
         balls.splice(j, 1);
         blocks.splice (i, 1);
         score += 1;
+
+  //---------own code-------//
   //level increasing 
       //level 2
       if(score==10){
@@ -299,6 +310,8 @@ function ball_block_collision() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for draw balls
+//---------own code-------//
+
 function drawNewBall(ball_X, ball_Y) {
   ctx.beginPath();
   ctx.arc(ball_X, ball_Y, 15, 0, Math.PI * 2);
@@ -322,6 +335,7 @@ function drawBalls() {
   }
 }
 //function for to move the balls throw Y-axis
+//---------own code-------//
 function moveBalls() {
   for (var i = 0; i < balls.length; i++) {
     balls[i].set("Y", balls[i].get("Y") - ball_speed);
@@ -331,6 +345,7 @@ function moveBalls() {
   }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//---------own code-------//
 function drawInfo() {
   var bg = new Image();
   bg.src = 'images/bg2.jpg';
@@ -352,6 +367,8 @@ function moveaudio()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//function calls
+//-------own code------//
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawInfo();
