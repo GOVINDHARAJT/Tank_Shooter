@@ -1,18 +1,18 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-///////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var tank_width = 130;
 var tank_height = 130;
-var tank_speed = 8;
+var tank_speed = 10;
 
 var tank = new Map();
-tank.set("X", canvas.width - 335);
+tank.set("X", canvas.width - 935);
 tank.set("Y", canvas.height - 250);
 tank.set("width", tank_width);
 tank.set("height", tank_height);
 
 var balls = [];
-var ball_speed = 10;
+var ball_speed = 15;
 var since_last_fire = performance.now();
 
 var blocks = [];
@@ -34,7 +34,7 @@ var space_pressed = false;
 document.addEventListener("keydown", KeyDownFunc, false);
 document.addEventListener("keyup", KeyUpFunc, false);
 
-///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //functions for keys
 function KeyDownFunc(e) {
   if (e.keyCode == 39) {
@@ -63,28 +63,28 @@ function KeyUpFunc(e) {
     space_pressed = false;
   }
 }
-////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //functions for button images 
 function buttonsload(){
   ctx.beginPath();
   var up = new Image();
   up.src = 'images/up.png';
-  ctx.drawImage(up, canvas.width - 110,canvas.height - 160, 60, 60);
+  ctx.drawImage(up, canvas.width - 140,canvas.height - 180, 60, 60);
   var right = new Image();
   right.src = 'images/right.png';
-  ctx.drawImage(right, canvas.width - 60,canvas.height - 110, 60, 60);
+  ctx.drawImage(right, canvas.width - 90,canvas.height - 130, 60, 60);
   var left = new Image();
   left.src = 'images/left.png';
-  ctx.drawImage(left, canvas.width - 160,canvas.height - 110, 60, 60);
+  ctx.drawImage(left, canvas.width - 190,canvas.height - 130, 60, 60);
   var down = new Image();
   down.src = 'images/down.png';
-  ctx.drawImage(down, canvas.width - 110,canvas.height - 60, 60, 60);
+  ctx.drawImage(down, canvas.width - 140,canvas.height - 80, 60, 60);
   var space = new Image();
   space.src = 'images/space.png';
-  ctx.drawImage(space, canvas.width - 1780,canvas.height - 100, 200, 60);
+  ctx.drawImage(space, canvas.width - 1750,canvas.height - 130, 230, 60);
   ctx.closePath();
 }
-/////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for draw tank
 function drawTank() {
   ctx.beginPath();
@@ -93,17 +93,17 @@ function drawTank() {
   ctx.drawImage(img, tank.get("X"), tank.get("Y"), tank_width, tank_height);
   ctx.closePath();
 }
-///////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for generate the X and Y coordinates randomly to the blocks
 function generateCoords() {
   do {
     var X = Math.random() * (canvas.width - 80) + 80;
-  } while (X + 120 > canvas.width);
+  } while (X + 320 > canvas.width);
 
   var Y = Math.random() * (-260 - 60) - 60;
   return [X, Y];
 }
-///////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for check the space between randomly created blocks X and Y coordinates
 function distanceCheck(X1, Y1, X2, Y2) {
   var distance = Math.sqrt(Math.pow(X1 - X2, 2) + Math.pow(Y1 - Y2, 2));
@@ -134,7 +134,7 @@ function blockDistanceChecker(X, Y) {
     return true;
   }
 }
-/////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for draw the new blocks
 function drawNewBlock() {
   
@@ -173,7 +173,7 @@ function moverFunc() {
   }
 }
 
-///////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for to find the collision between tank and blocks
 function block_collision() {
   
@@ -196,7 +196,7 @@ function block_collision() {
         swal('Game Over !', "Click the button play again", "images/game2.png",{ button: "Play Again!!!" });
         for (i = 0; i < blocks.length; i++)
         blocks.splice(i, block_count);
-        tank.set("X", canvas.width - 335);
+        tank.set("X", canvas.width - 935);
         tank.set("Y", canvas.height - 250);
         level = 1;
         lives = 4;
@@ -216,13 +216,13 @@ function block_collision() {
       
       blocks.splice(i, block_count);
       
-      tank.set("X", canvas.width - 335);
+      tank.set("X", canvas.width - 935);
       tank.set("Y", canvas.height - 250);
       
     }
   }
 }
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for to detect the collision between ball and blocks
 function collision_detector(first, second) {
   var x1 = first.get("X");
@@ -257,34 +257,39 @@ function ball_block_collision() {
         balls.splice(j, 1);
         blocks.splice (i, 1);
         score += 1;
-        if(score==10){
+  //level increasing 
+      //level 2
+      if(score==10){
         level += 1;
         block_speed += 0.2;
-        block_count += 2;
-      }
-      //level 2
-      if(score==20){
-        level += 1;
-        block_speed += 0.3;
-        block_count += 2;
+        block_count += 1;
       }
       //level 3
-      if(score==50){
+      if(score==20){
         level += 1;
-        block_speed += 0.5;
-        block_count += 2;
+        block_speed += 0.2;
+        block_count += 1;
       }
       //level 4
-      if(score==100){
+      if(score==50){
         level += 1;
-        block_speed += 0.8;
-        block_count += 2;
+        block_speed += 0.2;
+        block_count += 1;
+        tank_speed  += 2;
       }
       //level 5
+      if(score==100){
+        level += 1;
+        block_speed += 0.2;
+        block_count += 1;
+        tank_speed  += 1;
+      }
+      //level 6
       if(score==200){
         level += 1;
-        block_speed += 1;
-        block_count += 5;
+        block_speed += 0.2;
+        block_count += 1;
+        tank_speed  += 2;
       }
 
       }
@@ -292,7 +297,7 @@ function ball_block_collision() {
   }
 }
 
-///////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //function for draw balls
 function drawNewBall(ball_X, ball_Y) {
   ctx.beginPath();
@@ -325,8 +330,11 @@ function moveBalls() {
     }
   }
 }
-///////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function drawInfo() {
+  var bg = new Image();
+  bg.src = 'images/bg2.jpg';
+  ctx.drawImage(bg, 0,0);
   ctx.font = "bold 25px Bungee Shade";
   ctx.fillStyle = "Yellow";
   ctx.fillText("Lives: " + lives, 13, 75);
@@ -343,7 +351,7 @@ function moveaudio()
   one.play();
 }
 
-///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawInfo();
@@ -375,7 +383,7 @@ function draw() {
   if (space_pressed && balls.length < 30 && performance.now() - since_last_fire > 600) {
     one = new Audio('audio/cannon.mp3');
     one.play();
-    drawNewBall(tank.get("X") + 45, tank.get("Y") );
+    drawNewBall(tank.get("X") + 65, tank.get("Y") );
   }
   if (blocks.length < block_count) {
     drawNewBlock();
